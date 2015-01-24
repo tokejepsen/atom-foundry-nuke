@@ -1,0 +1,17 @@
+# See https://atom.io/docs/latest/creating-a-package#menus for more details
+# 'context-menu':
+#   '.workspace':
+#       'Send selection to Nuke': 'nuke:run'
+
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'nuke'
+      'submenu': [
+        { 'label': 'Toggle', 'command': 'nuke:toggle' }
+        { 'label': 'Run', 'command': 'nuke:run' }
+      ]
+    ]
+  }
+]
