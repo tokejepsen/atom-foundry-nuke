@@ -16,10 +16,10 @@ def SendToNuke(options):
         import traceback
         import __main__
 
-        namespace = __main__.__dict__.get('_atom_maya_plugin_SendToNuke')
+        namespace = __main__.__dict__.get('_atom_plugin_SendToNuke')
         if not namespace:
             namespace = __main__.__dict__.copy()
-            __main__.__dict__['_atom_maya_plugin_SendToNuke'] = namespace
+            __main__.__dict__['_atom_plugin_SendToNuke'] = namespace
 
         namespace['__file__'] = r\'{0}\'
 

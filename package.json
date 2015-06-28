@@ -4,13 +4,12 @@
   "version": "0.2.0",
   "private": true,
   "description": "Run python scripts from Atom to Nuke.",
-  "activationEvents": [
-    "nuke:run"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tokejepsen/atom-nuke"
+  "activationCommands": {
+    "atom-text-editor": [
+      "nuke:run"
+    ]
   },
+  "repository": "https://github.com/tokejepsen/atom-nuke",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"

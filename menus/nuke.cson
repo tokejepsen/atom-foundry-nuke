@@ -1,15 +1,17 @@
-# See https://atom.io/docs/latest/creating-a-package#menus for more details
-# 'context-menu':
-#   '.workspace':
-#       'Send selection to Nuke': 'nuke:run'
-
+# See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
+'context-menu':
+  'atom-text-editor': [
+    {
+      'label': 'Run in Nuke'
+      'command': 'nuke:run'
+    }
+  ]
 'menu': [
   {
     'label': 'Packages'
     'submenu': [
       'label': 'nuke'
       'submenu': [
-        { 'label': 'Toggle', 'command': 'nuke:toggle' }
         { 'label': 'Run', 'command': 'nuke:run' }
       ]
     ]

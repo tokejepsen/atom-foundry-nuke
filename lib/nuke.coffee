@@ -4,8 +4,11 @@ sys  = require 'sys'
 exec = require('child_process').exec
 StatusView = require './status-view'
 temp = require 'temp'
+{CompositeDisposable} = require 'atom'
 
 module.exports =
+
+    modalTimeout: null
 
     activate: (state) ->
 
@@ -13,10 +16,14 @@ module.exports =
         atom.config.setDefaults("nuke", host: '127.0.0.1', port: 8888, save_on_run: true )
 
         # Create the status view
-        @statusView = new StatusView(state.testViewState)
+        @statusView = new StatusView(state.statusViewState)
+        @modalPanel = atom.workspace.addModalPanel(item: @statusView.getElement(), visible: false)
+
+        # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
+        @subscriptions = new CompositeDisposable
 
         # Listen for run command
-        atom.workspaceView.command "nuke:run", => @run()
+        @subscriptions.add atom.commands.add 'atom-workspace', 'nuke:run': => @run()
 
         # Automatically track and cleanup files at exit
         temp.track()
@@ -24,34 +31,43 @@ module.exports =
 
     deactivate: ->
         @statusView.destroy()
+        @subscriptions.dispose()
 
     serialize: ->
 
+    getActiveEditor: ->
+        atom.workspace.getActiveTextEditor()
+
     run: ->
 
-        if atom.config.get('nuke').save_on_run
-            atom.workspaceView.trigger 'core:save'
-
         # Get the current selection
-        selection = atom.workspaceView.getActivePaneItem().getSelectedText()
+        editor = @getActiveEditor()
 
-        if selection.length > 0
-            # Create a tmp file and save the selection
-            @get_tmp_file_for_selection selection, (file) =>
-                @send_to_nuke file
-        else
+        if atom.config.get('nuke').save_on_run
+          editor.save()
+
+        selection = editor.getLastSelection()
+
+        if editor.getLastSelection().isEmpty()
             # Get the active pane file path
-            file = atom.workspaceView.getActivePaneItem().getPath()
-            @send_to_nuke file
+            @send_to_nuke editor.buffer.file.path
+        else
+            # console.log('send selection', selection)
+            # Create a tmp file and save the selection
+            text = editor.getSelections()[0].getText()
+
+            @get_tmp_file_for_selection text, (file) =>
+               @send_to_nuke file
 
         return
 
     send_to_nuke: (file) ->
 
+        # console.log('send to nuke', file)
+
         if not file.match '.py'
             @updateStatusView "Error: Not a python file"
-            atom.workspaceView.trigger 'nuke:show'
-            atom.workspaceView.trigger 'nuke:hide'
+            @closeModal()
             return
 
         HOST = atom.config.get('nuke').host
@@ -82,12 +98,22 @@ module.exports =
             # Cleanup any tmp files created
             temp.cleanup()
 
-            atom.workspaceView.trigger 'nuke:hide'
-
+            @closeModal()
 
     updateStatusView: (text) ->
+
+        clearTimeout @modalTimeout
+
+        @modalPanel.show()
         @statusView.update "[atom-nuke] #{text}"
 
+    closeModal: ->
+
+      clearTimeout @modalTimeout
+
+      @modalTimeout = setTimeout =>
+        @modalPanel.hide()
+      , 2000
 
     get_tmp_file_for_selection: (selection, callback) ->
 
