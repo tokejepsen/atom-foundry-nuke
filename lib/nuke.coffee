@@ -5,6 +5,7 @@ exec = require('child_process').exec
 StatusView = require './status-view'
 temp = require 'temp'
 {CompositeDisposable} = require 'atom'
+{MessagePanelView, PlainMessageView} = require 'atom-message-panel'
 
 module.exports =
 
@@ -86,6 +87,21 @@ module.exports =
 
             console.log 'stdout', stdout
             console.log 'stderr', stderr
+
+            @messagepanel = new MessagePanelView({title: 'Nuke Feedback'}) unless @messagepanel?
+
+            @messagepanel.clear()
+            @messagepanel.attach()
+
+            String::startsWith ?= (s) -> @slice(0, s.length) == s
+            text_class = 'text-highlight'
+            text_class = 'text-error' if stdout.startsWith('Traceback (most recent call last):')
+
+            lines = stdout.split('\n')
+            for line in lines
+              @messagepanel.add new PlainMessageView
+                message: line
+                className: text_class
 
             ellapsed = (Date.now() - date) / 1000
 

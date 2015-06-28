@@ -14,6 +14,7 @@ def SendToNuke(options):
 
     PY_CMD_TEMPLATE = textwrap.dedent('''
         import traceback
+        import sys
         import __main__
 
         namespace = __main__.__dict__.get('_atom_plugin_SendToNuke')
@@ -26,6 +27,7 @@ def SendToNuke(options):
         try:
             execfile(r\'{0}\', namespace, namespace)
         except:
+            sys.stdout.write(traceback.format_exc())
             traceback.print_exc()
 	''')
 
