@@ -1,7 +1,7 @@
 {
   "name": "Foundry-Nuke",
   "main": "./lib/nuke",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "Run python scripts from Atom to Nuke.",
   "activationCommands": {
