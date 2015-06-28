@@ -1,4 +1,4 @@
-Copyright (c) 2014 Toke Jepsen https://github.com/tokejepsen/atom-nuke
+Copyright (c) 2014 Toke Jepsen https://github.com/tokejepsen/atom-foundry-nuke
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

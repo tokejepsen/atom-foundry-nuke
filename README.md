@@ -1,4 +1,4 @@
-# atom-nuke
+# atom-foundry-nuke
 
 Run python scripts from Atom to Nuke.
 

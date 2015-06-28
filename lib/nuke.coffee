@@ -105,7 +105,7 @@ module.exports =
         clearTimeout @modalTimeout
 
         @modalPanel.show()
-        @statusView.update "[atom-nuke] #{text}"
+        @statusView.update "[atom-foundry-nuke] #{text}"
 
     closeModal: ->
 
@@ -117,7 +117,7 @@ module.exports =
 
     get_tmp_file_for_selection: (selection, callback) ->
 
-        temp.mkdir 'atom-nuke-selection', (err, dirPath) ->
+        temp.mkdir 'atom-foundry-nuke-selection', (err, dirPath) ->
 
             inputPath = path.join dirPath, 'command.py'
 
