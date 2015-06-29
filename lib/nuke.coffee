@@ -94,11 +94,12 @@ module.exports =
             @messagepanel.attach()
 
             String::startsWith ?= (s) -> @slice(0, s.length) == s
-            text_class = 'text-highlight'
-            text_class = 'text-error' if stdout.startsWith('Traceback (most recent call last):')
 
             lines = stdout.split('\n')
+            text_class = 'text-highlight'
             for line in lines
+              text_class = 'text-error' if line.startsWith('Traceback (most recent call last):')
+
               @messagepanel.add new PlainMessageView
                 message: line
                 className: text_class
