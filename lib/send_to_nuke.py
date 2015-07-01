@@ -42,7 +42,7 @@ def SendToNuke(options):
     client.connect(ADDR)
 
     client.send(command_tpl)
-    data = client.recv(1024)
+    data = client.recv(4096)
 
     print(data)
 
