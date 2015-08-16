@@ -10,24 +10,27 @@ temp = require 'temp'
 module.exports =
 
     modalTimeout: null
+    messagepanel: null
 
     activate: (state) ->
 
-        # Set defaults
-        atom.config.setDefaults("nuke", host: '127.0.0.1', port: 8888, save_on_run: true )
+      atom.commands.add 'atom-workspace', "nuke:closeMessage", => @closeMessage()
 
-        # Create the status view
-        @statusView = new StatusView(state.statusViewState)
-        @modalPanel = atom.workspace.addModalPanel(item: @statusView.getElement(), visible: false)
+      # Set defaults
+      atom.config.setDefaults("nuke", host: '127.0.0.1', port: 8888, save_on_run: true )
 
-        # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
-        @subscriptions = new CompositeDisposable
+      # Create the status view
+      @statusView = new StatusView(state.statusViewState)
+      @modalPanel = atom.workspace.addModalPanel(item: @statusView.getElement(), visible: false)
 
-        # Listen for run command
-        @subscriptions.add atom.commands.add 'atom-workspace', 'nuke:run': => @run()
+      # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
+      @subscriptions = new CompositeDisposable
 
-        # Automatically track and cleanup files at exit
-        temp.track()
+      # Listen for run command
+      @subscriptions.add atom.commands.add 'atom-workspace', 'nuke:run': => @run()
+
+      # Automatically track and cleanup files at exit
+      temp.track()
 
 
     deactivate: ->
@@ -75,7 +78,7 @@ module.exports =
         PORT = atom.config.get('nuke').port
 
         cmd  = "python #{__dirname}/send_to_nuke.py"
-        cmd += " -f #{file}"
+        cmd += " -f \"#{file}\""
         cmd += " -a '#{HOST}'" #h results in a conflict?
         cmd += " -p #{PORT}"
 
@@ -123,6 +126,10 @@ module.exports =
 
         @modalPanel.show()
         @statusView.update "[atom-foundry-nuke] #{text}"
+
+    closeMessage: ->
+
+      try @messagepanel.close()
 
     closeModal: ->
 

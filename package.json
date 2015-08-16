@@ -6,8 +6,8 @@
   "description": "Run python scripts from Atom to Nuke.",
   "activationCommands": {
     "atom-text-editor": [
-      "nuke:run"
-    ]
+      "nuke:run",
+      "nuke:closeMessage"]
   },
   "repository": "https://github.com/tokejepsen/atom-foundry-nuke",
   "license": "MIT",
