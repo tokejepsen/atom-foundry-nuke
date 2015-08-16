@@ -1,13 +1,14 @@
 {
   "name": "Foundry-Nuke",
   "main": "./lib/nuke",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "description": "Run python scripts from Atom to Nuke.",
   "activationCommands": {
     "atom-text-editor": [
       "nuke:run",
-      "nuke:closeMessage"]
+      "nuke:closeMessage"
+    ]
   },
   "repository": "https://github.com/tokejepsen/atom-foundry-nuke",
   "license": "MIT",
