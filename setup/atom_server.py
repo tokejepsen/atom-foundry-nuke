@@ -41,7 +41,7 @@ def server_start():
             data = client.recv(4096)
             if data:
                 result = nuke.executeInMainThreadWithResult(_exec, args=(data))
-                client.send(result)
+                client.send(bytes(command_tpl, 'utf-8'))
         except SystemExit:
             result = self.encode('SERVER: Shutting down...')
             client.send(result)
